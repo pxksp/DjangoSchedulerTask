@@ -1,15 +1,8 @@
-import random
-import time
-
 from apscheduler.triggers.cron import CronTrigger
 from django.http import JsonResponse
 from django.views.generic import View
 
-from apps.tasks.jobs import scheduler
-from apps.tasks.models import JobInfo
-
-
-
+from apps.tasks.scrapyd.tasks import *
 
 
 class AddTaskApi(View):
