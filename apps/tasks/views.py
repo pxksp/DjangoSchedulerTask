@@ -74,6 +74,20 @@ class AddTaskApi(View):
         return JsonResponse({'code': 200, 'msg': '添加成功'})
 
 
+class DelTaskApi(View):
+    """
+    删除任务接口
+    """
+
+    @classmethod
+    def post(cls, request, *args, **kwargs):
+        job_name = request.POST.get('job_name')
+        job_info = JobInfo.objects.get(job_name=job_name)
+        scheduler.remove_job(job_info.job_id)
+        job_info.delete()
+        return JsonResponse({'code': 200, 'msg': '删除成功'})
+
+
 class ModifyTaskStatusStopApi(View):
     """
     暂停任务接口
