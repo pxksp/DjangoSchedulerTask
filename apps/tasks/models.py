@@ -1,5 +1,6 @@
+import time
+
 from django.db import models
-from django.utils import timezone
 
 
 class JobInfo(models.Model):
@@ -16,7 +17,7 @@ class JobInfo(models.Model):
     job_fail_count = models.IntegerField(verbose_name='失败次数', default=0)
     job_start_time = models.CharField(max_length=64, verbose_name='开始时间')
     job_end_time = models.CharField(max_length=64, verbose_name='结束时间')
-    job_create_time = models.DateTimeField(default=timezone.now, verbose_name='创建时间')
+    job_create_time = models.DateTimeField(default=time.strftime('%Y-%m-%d %H:%M:%S', time.localtime()), verbose_name='创建时间')
     job_update_time = models.DateTimeField(auto_now=True, verbose_name='更新时间')
 
     class Meta:
