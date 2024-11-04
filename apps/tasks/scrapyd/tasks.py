@@ -18,36 +18,38 @@ def run_scrapy(*args, **kwargs):
     job_info.job_start_time = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime())
     job_info.job_status = 'running'
     job_info.save()
-    try:
-        time.sleep(random.randint(1, 5))
-
-        project = job_info.job_kwargs['project']
-        spider = job_info.job_kwargs['spider']
-        version = job_info.job_kwargs['version']
-        host = job_info.job_kwargs['host']
-        port = job_info.job_kwargs['port']
-        data = {
-            "project": project,
-            "spider": spider,
-            "version": version,
-        }
-        url = f"http://{host}:{port}" + "/schedule.json"
-        response = requests.post(url=url, data=data)
-        if response.status_code == 200:
-            job_info.job_success_count += 1
-            job_info.job_end_time = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime())
-            job_info.job_status = 'success'
-            job_info.save()
-            return True
-        else:
-            job_info.job_fail_count += 1
-            job_info.job_end_time = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime())
-            job_info.job_status = 'fail'
-            job_info.save()
-            return False
-    except Exception as e:
-        job_info.job_fail_count += 1
+    # try:
+    time.sleep(random.randint(1, 5))
+    job_kwargs = eval(job_info.job_kwargs) if job_info.job_kwargs else {}
+    project = job_kwargs['project']
+    spider = job_kwargs['spider']
+    version = job_kwargs['version']
+    host = job_kwargs['host']
+    port = job_kwargs['port']
+    data = {
+        "project": project,
+        "spider": spider,
+        "version": version,
+    }
+    url = f"http://{host}:{port}" + "/schedule.json"
+    response = requests.post(url=url, data=data)
+    if response.status_code == 200:
+        print(response.text)
+        job_info.job_success_count += 1
         job_info.job_end_time = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime())
-        job_info.job_status = 'fail'
+        job_info.job_status = 'success'
         job_info.save()
-        return False
+        return True
+    print(response.text)
+    # else:
+    #     job_info.job_fail_count += 1
+    #     job_info.job_end_time = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime())
+    #     job_info.job_status = 'fail'
+    #     job_info.save()
+    #     return False
+    # except Exception as e:
+    #     job_info.job_fail_count += 1
+    #     job_info.job_end_time = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime())
+    #     job_info.job_status = 'fail'
+    #     job_info.save()
+    #     return False
