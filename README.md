@@ -1,5 +1,5 @@
 # DjangoSchedulerTask
-Django 定时任务示例
+Django ApScheduler 定时任务示例
 
 命令：
 
