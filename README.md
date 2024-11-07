@@ -1,6 +1,7 @@
 # DjangoSchedulerTask
 Django ApScheduler 定时任务示例
 
+
 命令：
 
 - 创建虚拟环境：`python -m venv venv`
